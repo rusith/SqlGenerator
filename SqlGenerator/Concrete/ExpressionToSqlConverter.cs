@@ -29,6 +29,14 @@ namespace SqlGenerator.Concrete
                             {
                                 return $"[{member.Name}] IS NULL";
                             }
+
+                            if (rightConstantExpression.Type == typeof(int?))
+                            {
+                                if (!(rightConstantExpression.Value as int?).HasValue)
+                                {
+                                    return $"[{member.Name}] IS NULL";
+                                }
+                            }
                             if (rightConstantExpression.Type == typeof(string))
                             {
                                 return $"[{member.Name}] = '{rightConstantExpression.Value}'";

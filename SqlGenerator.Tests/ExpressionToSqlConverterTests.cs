@@ -33,6 +33,14 @@ namespace SqlGenerator.Tests
         }
 
         [Fact]
+        public void Constant_Equal_To_Property_NullableInt()
+        {
+            int? integer = null;
+            Converter.GetWhere<TestModel>((m) => m.IntProperty == integer)
+                .ShouldBe("[IntProperty] IS NULL");
+        }
+
+        [Fact]
         public void Constant_Equal_To_Property_Int()
         {
             Converter.GetWhere<TestModel>((m) => m.IntProperty == 122)
