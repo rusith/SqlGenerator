@@ -18,6 +18,8 @@ namespace SqlGenerator.Tests
 
     public class ExpressionToSqlConverterTests: TestBase
     {
+        #region object.prop == somethig
+
         [Fact]
         public void Constant_Equal_To_Property_String()
         {
@@ -41,6 +43,22 @@ namespace SqlGenerator.Tests
         }
 
         [Fact]
+        public void Constant_Equal_To_Property_NullableDouble()
+        {
+            double? d = null;
+            Converter.GetWhere<TestModel>((m) => m.DoubleProperty == d)
+                .ShouldBe("[DoubleProperty] IS NULL");
+        }
+
+        [Fact]
+        public void Constant_Equal_To_Property_NullableDateTime()
+        {
+            DateTime? dateTime = null;
+            Converter.GetWhere<TestModel>((m) => m.DateTimeProperty == dateTime)
+                .ShouldBe("[DateTimeProperty] IS NULL");
+        }
+
+        [Fact]
         public void Constant_Equal_To_Property_Int()
         {
             Converter.GetWhere<TestModel>((m) => m.IntProperty == 122)
@@ -53,5 +71,13 @@ namespace SqlGenerator.Tests
             Converter.GetWhere<TestModel>((m) => m.StringProperty == "something")
                 .ShouldBe("[StringProperty] = 'something'");
         }
+
+        #endregion
+
+        #region object.prop == something.somethingElse
+        #endregion
+
+        #region object.prop == object.somethign
+        #endregion
     }
 }

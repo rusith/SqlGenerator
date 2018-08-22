@@ -7,6 +7,7 @@ namespace SqlGenerator.Concrete
 {
     public class ExpressionToSqlConverter: IExpressionToSqlConverter
     {
+
         public string GetWhere<T>(Expression<Func<T, bool>> predicate) where T : class
         {
             if (!(predicate.Body is BinaryExpression body))
