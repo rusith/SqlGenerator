@@ -24,6 +24,10 @@ namespace SqlGenerator.Concrete
                 {
                     if (member.MemberType == MemberTypes.Property)
                     {
+                        var leftProperty = (member as PropertyInfo);
+                        var leftObject =
+                            leftProperty?.GetValue((leftMemberExpression.Expression as ConstantExpression)?.Value);
+
                         if (right.NodeType == ExpressionType.Constant && right is ConstantExpression rightConstantExpression)
                         {
                             if (rightConstantExpression.Value == null)
@@ -45,6 +49,18 @@ namespace SqlGenerator.Concrete
                             if (rightConstantExpression.Type == typeof(int))
                             {
                                 return $"[{member.Name}] = {rightConstantExpression.Value}";
+                            }
+                        }
+
+                        if (right.NodeType == ExpressionType.MemberAccess && right is MemberExpression rightmExpression)
+                        {
+                            if (rightmExpression.Member is PropertyInfo rightProperty)
+                            {
+                                var memberObject = ((ConstantExpression) rightmExpression.Expression).Value;
+                                if (memberObject != leftObject)
+                                {
+
+                                }
                             }
                         }
                     }
@@ -69,24 +85,6 @@ namespace SqlGenerator.Concrete
                                 return $"[{leftOperandMemberAccessException.Member.Name}] IS NULL";
                             }
                         }
-                        //if (rightMember.DeclaringType.IsSubclassOf(typeof(Nullable)))
-                        //{
-                        //    if (rightMember.MemberType == MemberTypes.Property)
-                        //    {
-                        //        var ce = (ConstantExpression)rightMeberAccess.Expression;
-                        //        var fieldInfo = ce.Value.GetType().GetField(leftOperandMemberAccessException.Member.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                        //        var value = fieldInfo.GetValue(ce.Value);
-
-                        //        var propertyValue = rightMember.DeclaringType.GetProperty(rightMember.Name)
-                        //            .GetValue(value);
-
-                        //        if (propertyValue == null)
-                        //        {
-                        //            return $"[{leftOperandMemberAccessException.Member.Name}] IS NULL";
-                        //        }
-
-                        //    }
-                        //}
                     }
                
                 }

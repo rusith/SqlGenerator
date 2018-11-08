@@ -16,7 +16,7 @@ namespace SqlGenerator.Tests
 
     }
 
-    public class ExpressionToSqlConverterTests: TestBase
+    public class ExpressionToSqlConverterTests : TestBase
     {
         #region object.prop == somethig
 
@@ -75,6 +75,13 @@ namespace SqlGenerator.Tests
         #endregion
 
         #region object.prop == something.somethingElse
+
+        public void EqualToObjectProperty()
+        {
+            var obj = new TestModel { StringProperty = "abc" };
+            Converter.GetWhere<TestModel>(m => m.StringProperty == obj.StringProperty);
+        }
+
         #endregion
 
         #region object.prop == object.somethign
